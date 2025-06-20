@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Low confidence view (show only <50%): hide spans data-confidence>=50 */
+body.show-low-confidence-only [data-confidence] {
+  display: none;
+}
+body.show-low-confidence-only [data-confidence^="0"],
+body.show-low-confidence-only [data-confidence^="1"],
+body.show-low-confidence-only [data-confidence^="2"],
+body.show-low-confidence-only [data-confidence^="3"],
+body.show-low-confidence-only [data-confidence^="4"] {
+  display: inline;
+} 
