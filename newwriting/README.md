@@ -1,9 +1,9 @@
-# ✒️ InkWeight
+# ✒️ NoSlop
 
 Inline confidence-weighted writing — see which parts of your text are rock-solid and which still need a second thought.
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/placeholder/inkweight-demo.gif" width="700" alt="InkWeight demo"/>
+  <img src="https://user-images.githubusercontent.com/placeholder/NoSlop-demo.gif" width="700" alt="NoSlop demo"/>
 </p>
 
 ---
@@ -37,26 +37,23 @@ Inline confidence-weighted writing — see which parts of your text are rock-sol
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/your-org/inkweight.git
-cd inkweight
+git clone https://github.com/your-org/NoSlop.git
+cd NoSlop
 ```
-
-> **ℹ️  Note** The actual app lives in the `newwriting` sub-folder (keeps the root free for docs & config).
 
 ### 2. Install dependencies
 
 ```bash
-cd newwriting          # jump into the app folder
 npm install            # grab packages (~200 MB)
 ```
 
 ### 3. Run the dev server
 
 ```bash
-npm run dev -- --host   # launches Vite; prints local & LAN URLs
+npm run dev -- --host   # prints local & LAN URLs
 ```
 
-Open the shown URL (default `http://localhost:5173`) in your browser.
+Open `http://localhost:5173` in your browser.
 
 ### 4. Build for production (optional)
 
@@ -90,4 +87,4 @@ Contributions welcome! 🧑‍💻
 
 ## License
 
-MIT © 2025 InkWeight contributors 
+MIT © 2025 NoSlop contributors
