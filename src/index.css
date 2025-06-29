@@ -12,4 +12,8 @@ body.show-low-confidence-only [data-confidence^="2"],
 body.show-low-confidence-only [data-confidence^="3"],
 body.show-low-confidence-only [data-confidence^="4"] {
   display: inline;
+}
+
+body {
+  background-color: #FFF7F4;
 } 
