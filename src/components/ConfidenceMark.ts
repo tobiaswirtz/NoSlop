@@ -3,6 +3,7 @@ import { Mark } from '@tiptap/core';
 export interface ConfidenceAttributes {
   value: number;
   assumptions: string[];
+  uid: string | null;
 }
 
 export const ConfidenceMark = Mark.create({
@@ -38,6 +39,11 @@ export const ConfidenceMark = Mark.create({
             'data-assumptions': list.join('|')
           };
         }
+      },
+      uid: {
+        default: null,
+        parseHTML: (el: HTMLElement) => el.getAttribute('data-uid'),
+        renderHTML: (attrs: { uid: string }) => ({ 'data-uid': attrs.uid })
       }
     };
   },
@@ -51,26 +57,41 @@ export const ConfidenceMark = Mark.create({
   },
 
   addCommands() {
+    const genUid = () => Date.now().toString(36) + Math.random().toString(36).slice(2);
+
     return {
       setConfidence:
-        (value: number) => ({ commands }: { commands: any }) =>
-          commands.setMark(this.name, { value }),
+        (value: number) => ({ editor, commands }: { editor: any; commands: any }) => {
+          const attrs: any = editor.getAttributes(this.name) || {};
+          const assumptions = Array.isArray(attrs.assumptions) ? attrs.assumptions : [];
+          return commands.setMark(this.name, {
+            value,
+            assumptions,
+            uid: genUid()
+          });
+        },
 
       addAssumption:
-        (assumption: string) => ({ commands }: { commands: any }) => {
-          const attrs: any = this.editor.getAttributes(this.name) || {};
+        (assumption: string) => ({ editor, commands }: { editor: any; commands: any }) => {
+          const attrs: any = editor.getAttributes(this.name) || {};
+          const value = attrs.value ?? 100;
           const list: string[] = Array.isArray(attrs.assumptions) ? attrs.assumptions : [];
-          return commands.updateAttributes(this.name, {
-            assumptions: [...list, assumption]
+          return commands.setMark(this.name, {
+            value,
+            assumptions: [...list, assumption],
+            uid: genUid()
           });
         },
 
       removeAssumption:
-        (index: number) => ({ commands }: { commands: any }) => {
-          const attrs: any = this.editor.getAttributes(this.name) || {};
+        (index: number) => ({ editor, commands }: { editor: any; commands: any }) => {
+          const attrs: any = editor.getAttributes(this.name) || {};
+          const value = attrs.value ?? 100;
           const list: string[] = Array.isArray(attrs.assumptions) ? attrs.assumptions : [];
-          return commands.updateAttributes(this.name, {
-            assumptions: list.filter((_, i) => i !== index)
+          return commands.setMark(this.name, {
+            value,
+            assumptions: list.filter((_, i) => i !== index),
+            uid: genUid()
           });
         }
     } as any;
