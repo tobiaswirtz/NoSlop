@@ -1,11 +1,10 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { ConfidenceMark } from './ConfidenceMark';
-import React, { useEffect } from 'react';
 import ConfidenceBubbleMenu from './ConfidenceBubbleMenu';
-import { scoreStatement } from '../llm';
+import React, { useEffect } from 'react';
 
-const STORAGE_KEY = 'inkweight-doc';
+const STORAGE_KEY = 'NoSlop-doc';
 
 export default function InkEditor() {
   const editor = useEditor({
@@ -20,43 +19,15 @@ export default function InkEditor() {
     }
   });
 
-  // Auto-save to LocalStorage
+  // Autosave to LocalStorage
   useEffect(() => {
     if (!editor) return;
-    const handler = () => {
+    const save = () => {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(editor.getJSON()));
     };
-    editor.on('update', handler);
+    editor.on('update', save);
     return () => {
-      editor.off('update', handler);
-    };
-  }, [editor]);
-
-  // Auto-score selection when user applies mark first time
-  const handleAutoScore = async () => {
-    if (!editor) return;
-    if (editor.isActive('confidence')) return; // already has
-    const { from, to } = editor.state.selection;
-    const text = editor.state.doc.textBetween(from, to, ' ');
-    if (!text.trim()) return;
-    const res = await scoreStatement(text.trim());
-    const conf = res?.confidence ?? 100;
-    (editor as any)
-      .chain()
-      .focus()
-      .setConfidence(conf)
-      .run();
-  };
-
-  useEffect(() => {
-    const handler = () => {
-      if (!editor?.state.selection.empty) {
-        handleAutoScore();
-      }
-    };
-    editor?.on('selectionUpdate', handler);
-    return () => {
-      editor?.off('selectionUpdate', handler);
+      editor.off('update', save);
     };
   }, [editor]);
 
@@ -92,8 +63,8 @@ export default function InkEditor() {
           Toggle Low Confidence View
         </button>
       </div>
-      <div className="flex justify-center py-6 min-h-screen overflow-y-auto">
-        <div className="bg-white page w-[816px] min-h-[1056px] p-8">
+      <div className="flex justify-center bg-gray-100 py-6 min-h-screen overflow-y-auto">
+        <div className="bg-white shadow page w-[816px] min-h-[1056px] p-8">
           <EditorContent editor={editor} />
           <ConfidenceBubbleMenu editor={editor} />
         </div>

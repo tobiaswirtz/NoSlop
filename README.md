@@ -69,7 +69,7 @@ npm run build          # outputs to dist/
 
 1. Start typing on the page.
 2. Highlight a word, sentence, or paragraph.
-3. A Bubble Menu appears – drag the slider to the desired confidence %. The text immediately changes its "ink weight".
+3. A Bubble Menu appears – drag the slider to the desired confidence %. The text immediately changes its "font weight".
 4. Use *Toggle Low Confidence View* (top-left buttons) to focus feedback.
 5. Click *Export HTML* to download a standalone file for sharing.
 
